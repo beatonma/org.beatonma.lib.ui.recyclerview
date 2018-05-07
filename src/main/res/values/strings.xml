@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">recyclerview</string>
+    <string name="vh_empty_message">No content found</string>
+</resources>
