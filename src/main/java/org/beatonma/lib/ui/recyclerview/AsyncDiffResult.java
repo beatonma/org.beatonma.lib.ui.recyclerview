@@ -1,8 +1,8 @@
 package org.beatonma.lib.ui.recyclerview;
 
-import android.support.v7.util.DiffUtil;
-import android.support.v7.util.ListUpdateCallback;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Michael on 25/08/2017.
@@ -33,7 +33,7 @@ public class AsyncDiffResult<D> {
         return mData;
     }
 
-    public void dispatchUpdatesTo(final RecyclerView.Adapter adapter) {
+    public void dispatchUpdatesTo(final androidx.recyclerview.widget.RecyclerView.Adapter adapter) {
         mResult.dispatchUpdatesTo(adapter);
     }
 

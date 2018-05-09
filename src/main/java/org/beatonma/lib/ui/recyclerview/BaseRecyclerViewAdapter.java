@@ -1,8 +1,8 @@
 package org.beatonma.lib.ui.recyclerview;
 
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Michael on 14/07/2016.
  */
-public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder>
+public abstract class BaseRecyclerViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder>
         implements SimpleItemTouchHelperCallback.ItemTouchHelperAdapter {
     protected final static String TAG = "BaseRvAdapter";
     protected final static int VIEW_TYPE_DEFAULT = 0;

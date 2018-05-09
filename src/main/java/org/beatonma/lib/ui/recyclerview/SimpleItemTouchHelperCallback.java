@@ -1,7 +1,7 @@
 package org.beatonma.lib.ui.recyclerview;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -29,7 +29,7 @@ public abstract class SimpleItemTouchHelperCallback extends ItemTouchHelper.Call
     }
 
     @Override
-    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+    public int getMovementFlags(androidx.recyclerview.widget.RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, swipeFlags);
@@ -46,7 +46,7 @@ public abstract class SimpleItemTouchHelperCallback extends ItemTouchHelper.Call
     }
 
     @Override
-    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+    public void onSelectedChanged(androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
 
         if (viewHolder != null) {
@@ -84,13 +84,13 @@ public abstract class SimpleItemTouchHelperCallback extends ItemTouchHelper.Call
             }
 
             @Override
-            public boolean onMove(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final RecyclerView.ViewHolder target) {
+            public boolean onMove(final androidx.recyclerview.widget.RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final androidx.recyclerview.widget.RecyclerView.ViewHolder target) {
                 adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
 
             @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
+            public void onSwiped(final androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder, final int direction) {
                 adapter.onItemDismiss(viewHolder.getAdapterPosition());
             }
         };
@@ -149,7 +149,7 @@ public abstract class SimpleItemTouchHelperCallback extends ItemTouchHelper.Call
         public SimpleItemTouchHelperCallback build() {
             return new SimpleItemTouchHelperCallback(recyclerView) {
                 @Override
-                public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                public int getMovementFlags(RecyclerView recyclerView, androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder) {
                     return makeMovementFlags(dragFlags, swipeFlags);
                 }
 
@@ -164,7 +164,7 @@ public abstract class SimpleItemTouchHelperCallback extends ItemTouchHelper.Call
                 }
 
                 @Override
-                public boolean onMove(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final RecyclerView.ViewHolder target) {
+                public boolean onMove(final RecyclerView recyclerView, final androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder, final androidx.recyclerview.widget.RecyclerView.ViewHolder target) {
                     adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                     return true;
                 }

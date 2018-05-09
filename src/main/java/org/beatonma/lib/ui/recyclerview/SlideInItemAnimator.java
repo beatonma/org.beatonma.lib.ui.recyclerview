@@ -2,8 +2,8 @@ package org.beatonma.lib.ui.recyclerview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 
@@ -16,8 +16,8 @@ import java.util.List;
 public class SlideInItemAnimator extends DefaultItemAnimator {
     private final static String TAG = "SlideInItemAnimator";
 
-    private final List<RecyclerView.ViewHolder> pendingAdds = new ArrayList<>();
-    private final List<RecyclerView.ViewHolder> pendingRemoves = new ArrayList<>();
+    private final List<androidx.recyclerview.widget.RecyclerView.ViewHolder> pendingAdds = new ArrayList<>();
+    private final List<androidx.recyclerview.widget.RecyclerView.ViewHolder> pendingRemoves = new ArrayList<>();
     private final int slideFromEdge;
 
     /**
@@ -98,7 +98,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
         }
         if (!pendingRemoves.isEmpty()) {
             for (int i = pendingRemoves.size() - 1; i >= 0; i--) {
-                final RecyclerView.ViewHolder holder = pendingRemoves.get(i);
+                final androidx.recyclerview.widget.RecyclerView.ViewHolder holder = pendingRemoves.get(i);
                 holder.itemView.animate()
                         .alpha(0f)
                         .setDuration(getRemoveDuration())
