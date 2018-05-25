@@ -1,8 +1,5 @@
 package org.beatonma.lib.ui.recyclerview;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +8,11 @@ import org.beatonma.lib.recyclerview.R;
 
 import java.util.Collection;
 import java.util.List;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 
 /**
  * Created by Michael on 29/07/2017.
@@ -25,8 +27,16 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
 
     protected EmptyViews mEmpty;
 
+    @Nullable
+    public abstract List getItems();
+
     public EmptyBaseRecyclerViewAdapter() {
-        this(null);
+        setEmptyViews(new EmptyViewsAdapter() {
+            @Override
+            public Collection<?> getDataset() {
+                return getItems();
+            }
+        });
     }
 
     /**
@@ -183,7 +193,7 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
 
     @Override
     public void diff(final List<?> oldList, final List<?> newList) {
-        DiffUtil.calculateDiff(getDiffCallback(oldList, newList), false).dispatchUpdatesTo(this);
+        DiffUtil.calculateDiff(getDiffCallback(oldList, newList), true).dispatchUpdatesTo(this);
     }
 
     @Override
