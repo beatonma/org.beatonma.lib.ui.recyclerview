@@ -2,13 +2,14 @@ package org.beatonma.lib.ui.recyclerview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Michael on 24/06/2016.
@@ -16,21 +17,31 @@ import java.util.List;
 public class SlideInItemAnimator extends DefaultItemAnimator {
     private final static String TAG = "SlideInItemAnimator";
 
-    private final List<androidx.recyclerview.widget.RecyclerView.ViewHolder> pendingAdds = new ArrayList<>();
-    private final List<androidx.recyclerview.widget.RecyclerView.ViewHolder> pendingRemoves = new ArrayList<>();
+    private final List<RecyclerView.ViewHolder> pendingAdds = new ArrayList<>();
+    private final List<RecyclerView.ViewHolder> pendingRemoves = new ArrayList<>();
     private final int slideFromEdge;
+    private final int itemDelayMs;
 
     /**
      * Default to sliding in upward.
      */
     public SlideInItemAnimator() {
-        this(Gravity.BOTTOM, -1); // undefined layout dir; bottom isn't relative
+        this(Gravity.BOTTOM, -1, 20); // undefined layout dir; bottom isn't relative
+    }
+
+    public SlideInItemAnimator(final int itemDelayMs) {
+        this(Gravity.BOTTOM, -1, itemDelayMs);
     }
 
     public SlideInItemAnimator(int slideFromEdge, int layoutDirection) {
+        this(slideFromEdge, layoutDirection, 20);
+    }
+
+    public SlideInItemAnimator(final int slideFromEdge, final int layoutDirection, final int itemDelayMs) {
         this.slideFromEdge = Gravity.getAbsoluteGravity(slideFromEdge, layoutDirection);
         setAddDuration(160L);
         setRemoveDuration(120L);
+        this.itemDelayMs = itemDelayMs;
     }
 
     @Override
@@ -72,7 +83,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
                         .translationX(0f)
                         .translationY(0f)
                         .setDuration(getAddDuration())
-                        .setStartDelay((int) (holder.getAdapterPosition() * getAddDuration() * 0.2f))
+                        .setStartDelay(holder.getAdapterPosition() * itemDelayMs)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationStart(Animator animation) {
@@ -160,7 +171,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
 
     @Override
     public boolean isRunning() {
-        return (!pendingAdds.isEmpty() && !pendingAdds.isEmpty()) || super.isRunning();
+        return !pendingAdds.isEmpty() || super.isRunning();
     }
 
     private void dispatchFinishedWhenDone() {
