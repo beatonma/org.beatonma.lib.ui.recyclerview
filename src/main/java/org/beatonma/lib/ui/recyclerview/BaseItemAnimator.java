@@ -23,8 +23,6 @@ import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 
-import org.beatonma.lib.log.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,24 +46,24 @@ public class BaseItemAnimator extends SimpleItemAnimator {
 
     private static TimeInterpolator sDefaultInterpolator;
 
-    private final ArrayList<RecyclerView.ViewHolder> mPendingRemovals = new ArrayList<>();
-    private final ArrayList<RecyclerView.ViewHolder> mPendingAdditions = new ArrayList<>();
-    private final ArrayList<MoveInfo> mPendingMoves = new ArrayList<>();
-    private final ArrayList<ChangeInfo> mPendingChanges = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mPendingRemovals = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mPendingAdditions = new ArrayList<>();
+    protected final ArrayList<MoveInfo> mPendingMoves = new ArrayList<>();
+    protected final ArrayList<ChangeInfo> mPendingChanges = new ArrayList<>();
 
-    private final ArrayList<ArrayList<RecyclerView.ViewHolder>> mAdditionsList = new ArrayList<>();
-    private final ArrayList<ArrayList<MoveInfo>> mMovesList = new ArrayList<>();
-    private final ArrayList<ArrayList<ChangeInfo>> mChangesList = new ArrayList<>();
+    protected final ArrayList<ArrayList<RecyclerView.ViewHolder>> mAdditionsList = new ArrayList<>();
+    protected final ArrayList<ArrayList<MoveInfo>> mMovesList = new ArrayList<>();
+    protected final ArrayList<ArrayList<ChangeInfo>> mChangesList = new ArrayList<>();
 
-    private final ArrayList<RecyclerView.ViewHolder> mAddAnimations = new ArrayList<>();
-    private final ArrayList<RecyclerView.ViewHolder> mMoveAnimations = new ArrayList<>();
-    private final ArrayList<RecyclerView.ViewHolder> mRemoveAnimations = new ArrayList<>();
-    private final ArrayList<RecyclerView.ViewHolder> mChangeAnimations = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mAddAnimations = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mMoveAnimations = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mRemoveAnimations = new ArrayList<>();
+    protected final ArrayList<RecyclerView.ViewHolder> mChangeAnimations = new ArrayList<>();
 
 
     public static class MoveInfo {
-        RecyclerView.ViewHolder holder;
-        int fromX, fromY, toX, toY;
+        public RecyclerView.ViewHolder holder;
+        public int fromX, fromY, toX, toY;
 
         MoveInfo(RecyclerView.ViewHolder holder, int fromX, int fromY, int toX, int toY) {
             this.holder = holder;
@@ -77,8 +75,8 @@ public class BaseItemAnimator extends SimpleItemAnimator {
     }
 
     public static class ChangeInfo {
-        RecyclerView.ViewHolder oldHolder, newHolder;
-        int fromX, fromY, toX, toY;
+        public RecyclerView.ViewHolder oldHolder, newHolder;
+        public int fromX, fromY, toX, toY;
         private ChangeInfo(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder) {
             this.oldHolder = oldHolder;
             this.newHolder = newHolder;
@@ -347,12 +345,6 @@ public class BaseItemAnimator extends SimpleItemAnimator {
     public boolean animateChange(RecyclerView.ViewHolder oldHolder,
                                  RecyclerView.ViewHolder newHolder,
                                  int fromX, int fromY, int toX, int toY) {
-        if (oldHolder == newHolder) {
-            // Don't know how to run change animations when the same view holder is re-used.
-            // run a move animation to handle position changes.
-            Log.d(TAG, "Redirecting change() to move()");
-            return animateMove(oldHolder, fromX, fromY, toX, toY);
-        }
 
         if (onAnimateChange(oldHolder, newHolder, fromX, fromY, toX, toY)) {
             mPendingChanges.add(new ChangeInfo(oldHolder, newHolder, fromX, fromY, toX, toY));
