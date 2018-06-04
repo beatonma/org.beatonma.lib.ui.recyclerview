@@ -32,6 +32,7 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
 
     public EmptyBaseRecyclerViewAdapter() {
         setEmptyViews(new EmptyViewsAdapter() {
+            @Nullable
             @Override
             public Collection<?> getDataset() {
                 return getItems();
