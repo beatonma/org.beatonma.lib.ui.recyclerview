@@ -22,7 +22,6 @@ public class RVUtil {
                              @NonNull final RecyclerView.LayoutManager layoutManager) {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new SlideInItemAnimator());
     }
 
     public static void setup(@NonNull final RecyclerView recyclerView,
