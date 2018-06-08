@@ -1,13 +1,14 @@
 package org.beatonma.lib.ui.recyclerview;
 
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Michael on 14/07/2016.
@@ -123,19 +124,19 @@ public abstract class BaseRecyclerViewAdapter extends androidx.recyclerview.widg
         getDiff(callback, detectMoves).dispatchUpdatesTo(this);
     }
 
-    public static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList) {
+    private static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList) {
         return DiffUtil.calculateDiff(getDefaultDiffCallback(oldList, newList));
     }
 
-    public static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList, final boolean detectMoves) {
+    private static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList, final boolean detectMoves) {
         return DiffUtil.calculateDiff(getDefaultDiffCallback(oldList, newList), detectMoves);
     }
 
-    public static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback) {
+    private static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback) {
         return DiffUtil.calculateDiff(callback);
     }
 
-    public static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback, final boolean detectMoves) {
+    private static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback, final boolean detectMoves) {
         return DiffUtil.calculateDiff(callback, detectMoves);
     }
 }

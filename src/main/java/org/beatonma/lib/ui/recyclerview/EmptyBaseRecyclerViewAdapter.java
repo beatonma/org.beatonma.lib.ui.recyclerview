@@ -162,7 +162,9 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
         };
     }
 
-    public static DiffUtil.Callback getDefaultDiffCallback(final List<?> oldList, final List<?> newList) {
+    @NonNull
+    public static DiffUtil.Callback getDefaultDiffCallback(
+            @Nullable final List<?> oldList, @Nullable final List<?> newList) {
         return new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -193,39 +195,60 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
     }
 
     @Override
-    public void diff(final List<?> oldList, final List<?> newList) {
+    public void diff(@Nullable final List<?> oldList, @Nullable final List<?> newList) {
         DiffUtil.calculateDiff(getDiffCallback(oldList, newList), true).dispatchUpdatesTo(this);
     }
 
     @Override
-    public void diff(final List<?> oldList, final List<?> newList, final boolean detectMoves) {
-        DiffUtil.calculateDiff(getDiffCallback(oldList, newList), detectMoves).dispatchUpdatesTo(this);
-    }
-
-    @Override
-    public void diff(final DiffUtil.Callback callback) {
+    public void diff(@NonNull final DiffUtil.Callback callback) {
         getDiff(callback).dispatchUpdatesTo(this);
     }
 
     @Override
-    public void diff(final DiffUtil.Callback callback, final boolean detectMoves) {
+    public void diff(@NonNull final DiffUtil.Callback callback, final boolean detectMoves) {
         getDiff(callback, detectMoves).dispatchUpdatesTo(this);
     }
 
-    public static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList) {
-        return DiffUtil.calculateDiff(getDefaultDiffCallback(oldList, newList));
-    }
-
-    public static DiffUtil.DiffResult getDiff(final List<?> oldList, final List<?> newList, final boolean detectMoves) {
-        return DiffUtil.calculateDiff(getDefaultDiffCallback(oldList, newList), detectMoves);
-    }
-
-    public static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback) {
+    @NonNull
+    private static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback) {
         return DiffUtil.calculateDiff(callback);
     }
 
-    public static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback, final boolean detectMoves) {
+    @NonNull
+    private static DiffUtil.DiffResult getDiff(final DiffUtil.Callback callback, final boolean detectMoves) {
         return DiffUtil.calculateDiff(callback, detectMoves);
+    }
+
+    public abstract static class DiffAdapter<T> extends DiffUtil.Callback {
+        @Nullable
+        public final List<T> oldList;
+
+        @Nullable
+        public final List<T> newList;
+
+        public DiffAdapter(@Nullable final List<T> oldList, @Nullable final List<T> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList == null ? 0 : oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList == null ? 0 : newList.size();
+        }
+
+        @Override
+        public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
+            try {
+                return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
+            } catch (Exception e) {
+                return false;
+            }
+        }
     }
 
     /**
@@ -277,7 +300,7 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
         }
 
         private class EmptyViewHolder extends BaseViewHolder {
-            public EmptyViewHolder(final View v) {
+            EmptyViewHolder(final View v) {
                 super(v);
             }
 
@@ -288,7 +311,7 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
         }
 
         private class LoadingViewHolder extends BaseViewHolder {
-            public LoadingViewHolder(final View v) {
+            LoadingViewHolder(final View v) {
                 super(v);
             }
 
@@ -300,7 +323,7 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
     }
 
     private static class InvisibleViewHolder extends BaseViewHolder {
-        public InvisibleViewHolder(final View v) {
+        InvisibleViewHolder(final View v) {
             super(v);
         }
 
