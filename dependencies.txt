@@ -1,0 +1,13 @@
+org.beatonma.lib:log:0.6.1
+
+org.beatonma.lib:style:0.6.1
+
+androidx.databinding:databinding-common:3.2.0-alpha17
+androidx.databinding:databinding-runtime:3.2.0-alpha17
+androidx.databinding:databinding-adapters:3.2.0-alpha17
+
+androidx.recyclerview:recyclerview:1.0.0-alpha1
+
+com.google.android.material:material:1.0.0-alpha1
+
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
