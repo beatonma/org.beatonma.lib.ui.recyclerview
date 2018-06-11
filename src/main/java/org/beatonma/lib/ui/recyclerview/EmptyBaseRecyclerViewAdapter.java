@@ -43,14 +43,14 @@ public abstract class EmptyBaseRecyclerViewAdapter extends BaseRecyclerViewAdapt
     /**
      * @param emptyViews An implementation of the EmptyViews interface
      */
-    public EmptyBaseRecyclerViewAdapter(final EmptyViews emptyViews) {
+    public EmptyBaseRecyclerViewAdapter(@NonNull final EmptyViews emptyViews) {
         mEmpty = emptyViews;
     }
 
     /**
      * @param emptyViews An implementation of the EmptyViews interface
      */
-    public void setEmptyViews(final EmptyViews emptyViews) {
+    public void setEmptyViews(@NonNull final EmptyViews emptyViews) {
         mEmpty = emptyViews;
     }
 
