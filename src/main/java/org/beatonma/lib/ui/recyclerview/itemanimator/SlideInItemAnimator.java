@@ -1,9 +1,12 @@
-package org.beatonma.lib.ui.recyclerview;
+package org.beatonma.lib.ui.recyclerview.itemanimator;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.view.Gravity;
 import android.view.View;
+
+import org.beatonma.lib.ui.style.Interpolate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,9 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
     private final List<RecyclerView.ViewHolder> pendingRemoves = new ArrayList<>();
     private final int slideFromEdge;
     private final int itemDelayMs;
+
+    private final TimeInterpolator enterInterpolator = Interpolate.getEnterInterpolator();
+    private final TimeInterpolator exitInterpolator = Interpolate.getExitInterpolator();
 
     /**
      * Default to sliding in upward.
@@ -102,7 +108,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
                                 clearAnimatedValues(holder.itemView);
                             }
                         })
-//                        .setInterpolator(AnimationUtils.getEnterInterpolator())
+                        .setInterpolator(enterInterpolator)
                         .start();
                 pendingAdds.remove(i);
             }
@@ -131,7 +137,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
                                 clearAnimatedValues(holder.itemView);
                             }
                         })
-//                        .setInterpolator(AnimationUtils.getExitInterpolator())
+                        .setInterpolator(exitInterpolator)
                         .start();
                 pendingRemoves.remove(i);
             }
@@ -147,7 +153,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
         }
         if (pendingRemoves.remove(holder)) {
             dispatchRemoveFinished(holder);
-//            clearAnimatedValues(holder.itemView);
+            clearAnimatedValues(holder.itemView);
         }
         super.endAnimation(holder);
     }
@@ -162,7 +168,7 @@ public class SlideInItemAnimator extends DefaultItemAnimator {
         }
         for (int i = pendingRemoves.size() - 1; i >= 0; i--) {
             final RecyclerView.ViewHolder holder = pendingRemoves.get(i);
-//            clearAnimatedValues(holder.itemView);
+            clearAnimatedValues(holder.itemView);
             dispatchRemoveFinished(holder);
             pendingRemoves.remove(i);
         }
