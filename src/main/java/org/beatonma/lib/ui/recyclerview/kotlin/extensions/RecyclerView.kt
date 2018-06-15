@@ -9,7 +9,6 @@ import org.beatonma.lib.ui.recyclerview.BaseRecyclerViewAdapter
 import org.beatonma.lib.ui.recyclerview.itemanimator.FadeItemAnimator
 import java.lang.ref.WeakReference
 
-
 fun RecyclerView.setup(adapter: BaseRecyclerViewAdapter,
                        layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
                        itemAnimator: RecyclerView.ItemAnimator = FadeItemAnimator(),
@@ -26,7 +25,7 @@ fun RecyclerView.setup(adapter: BaseRecyclerViewAdapter,
  */
 fun RecyclerView.setupGrid(adapter: BaseRecyclerViewAdapter, columnWidth: Int) {
     setup(adapter,
-          layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL))
+            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL))
 
     val weakRv = WeakReference<RecyclerView>(this)
 
