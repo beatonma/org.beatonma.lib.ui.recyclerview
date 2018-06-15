@@ -1,11 +1,9 @@
 package org.beatonma.lib.ui.recyclerview
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import org.beatonma.lib.recyclerview.R
 
@@ -14,106 +12,72 @@ import org.beatonma.lib.recyclerview.R
  * A RecyclerView Adapter that provides an interface to handle null/empty datasets in a simple way.
  */
 
-abstract class EmptyBaseRecyclerViewAdapter : BaseRecyclerViewAdapter {
-
-    protected lateinit var mEmpty: EmptyViews
+abstract class EmptyBaseRecyclerViewAdapter(
+        val nullLayoutID: Int = R.layout.vh_loading,
+        val emptyLayoutID: Int = R.layout.vh_invisible
+): BaseRecyclerViewAdapter() {
 
     abstract val items: List<*>?
 
-    constructor() {
-        setEmptyViews(object : EmptyViewsAdapter() {
-            override val dataset: Collection<*>?
-                get() = items
-        })
+    /**
+     * Return a ViewHolder to use when items == null
+     * This usually means data is still being loaded
+     */
+    open fun getNullViewHolder(view: View): BaseViewHolder {
+        return LoadingViewHolder(view)
     }
 
     /**
-     * @param emptyViews An implementation of the EmptyViews interface
+     * Return a ViewHolder to use when items,isEmpty()
+     * This usually means data loading has finished but has no contents
      */
-    constructor(@NonNull emptyViews: EmptyViews) {
-        mEmpty = emptyViews
-    }
-
-    /**
-     * @param emptyViews An implementation of the EmptyViews interface
-     */
-    fun setEmptyViews(@NonNull emptyViews: EmptyViews) {
-        mEmpty = emptyViews
+    open fun getEmptyViewHolder(view: View): BaseViewHolder {
+        return InvisibleViewHolder(view)
     }
 
     @CallSuper
     override fun getItemCount(): Int {
-        val dataset = mEmpty.dataset
-        return if (dataset == null) {
-            if (mEmpty.nullLayoutID == 0) 0 else 1
-        } else if (dataset.isEmpty()) {
-            if (mEmpty.emptyLayoutID == 0) 0 else 1
-        } else {
-            dataset.size
+        return when {
+            items == null -> if (nullLayoutID == 0) 0 else 1
+            items?.isEmpty() == true -> if (emptyLayoutID == 0) 0 else 1
+            else -> items?.size ?: 0
         }
-//        Log.w(TAG, "Using EmptyBaseRecyclerViewAdapter without EmptyViews interface - you should use BaseRecyclerViewAdapter if you do not require empty/null dataset handling")
     }
 
     @CallSuper
     override fun getItemViewType(position: Int): Int {
-//        if (mEmpty == null) {
-//            Log.w(TAG, "Using EmptyBaseRecyclerViewAdapter without EmptyViews interface - you should use BaseRecyclerViewAdapter if you do not require empty/null dataset handling")
-//            return super.getItemViewType(position)
-//        }
-        val dataset = mEmpty.dataset
-        return if (dataset == null) {
-            VIEW_TYPE_LOADING
-        } else if (dataset.isEmpty()) {
-            VIEW_TYPE_EMPTY
-        } else {
-            BaseRecyclerViewAdapter.VIEW_TYPE_DEFAULT
+        return when {
+            items == null -> VIEW_TYPE_LOADING
+            items?.isEmpty() == true -> VIEW_TYPE_EMPTY
+            else -> BaseRecyclerViewAdapter.VIEW_TYPE_DEFAULT
         }
     }
 
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-//        if (mEmpty != null) {
-            val layoutID: Int
-            when (viewType) {
-                VIEW_TYPE_EMPTY -> {
-                    layoutID = mEmpty.emptyLayoutID
-                    return if (layoutID == 0) {
-                        InvisibleViewHolder(inflate(parent, R.layout.vh_invisible))
-                    } else {
-                        mEmpty.getEmptyViewHolder(inflate(parent, mEmpty.emptyLayoutID))
-                    }
-                }
-                VIEW_TYPE_LOADING -> {
-                    layoutID = mEmpty.nullLayoutID
-                    return if (layoutID == 0) {
-                        InvisibleViewHolder(inflate(parent, R.layout.vh_invisible))
-                    } else {
-                        mEmpty.getNullViewHolder(inflate(parent, mEmpty.nullLayoutID))
-                    }
-                }
-            }
-//        }
-        Log.w(TAG, "Using EmptyBaseRecyclerViewAdapter without EmptyViews interface - you should use BaseRecyclerViewAdapter if you do not require empty/null dataset handling")
-        return InvisibleViewHolder(inflate(parent, R.layout.vh_invisible))
+        return when (viewType) {
+            VIEW_TYPE_LOADING -> getNullViewHolder(inflate(parent, nullLayoutID))
+            VIEW_TYPE_EMPTY -> getEmptyViewHolder(inflate(parent, emptyLayoutID))
+            else -> InvisibleViewHolder(inflate(parent, R.layout.vh_invisible))
+        }
     }
 
-    @NonNull
-    fun getDiffCallback(@Nullable oldList: List<*>?,
-                        @Nullable newList: List<*>?): DiffUtil.Callback {
+    fun getDiffCallback(oldList: List<*>?,
+                        newList: List<*>?): DiffUtil.Callback {
         return object : DiffUtil.Callback() {
             override fun getOldListSize(): Int {
                 return if (oldList == null) {
-                    if (mEmpty.nullLayoutID == 0) 0 else 1
+                    if (nullLayoutID == 0) 0 else 1
                 } else {
-                    Math.max(if (mEmpty.emptyLayoutID == 0) 0 else 1, oldList.size)
+                    Math.max(if (emptyLayoutID == 0) 0 else 1, oldList.size)
                 }
             }
 
             override fun getNewListSize(): Int {
                 return if (newList == null) {
-                    if (mEmpty.nullLayoutID == 0) 0 else 1
+                    if (nullLayoutID == 0) 0 else 1
                 } else {
-                    Math.max(if (mEmpty.emptyLayoutID == 0) 0 else 1, newList.size)
+                    Math.max(if (emptyLayoutID == 0) 0 else 1, newList.size)
                 }
             }
 
@@ -127,25 +91,24 @@ abstract class EmptyBaseRecyclerViewAdapter : BaseRecyclerViewAdapter {
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList!![oldItemPosition] == newList!![newItemPosition]
+                return oldList?.get(oldItemPosition) == newList?.get(newItemPosition) ?: false
             }
         }
     }
 
-    override fun diff(@Nullable oldList: List<*>?, @Nullable newList: List<*>?) {
+    override fun diff(oldList: List<*>?, newList: List<*>?) {
         DiffUtil.calculateDiff(getDiffCallback(oldList, newList), true).dispatchUpdatesTo(this)
     }
 
-    override fun diff(@NonNull callback: DiffUtil.Callback) {
+    override fun diff(callback: DiffUtil.Callback) {
         getDiff(callback).dispatchUpdatesTo(this)
     }
 
-    override fun diff(@NonNull callback: DiffUtil.Callback, detectMoves: Boolean) {
+    override fun diff(callback: DiffUtil.Callback, detectMoves: Boolean) {
         getDiff(callback, detectMoves).dispatchUpdatesTo(this)
     }
 
-    abstract class DiffAdapter<T>(
-                                  val oldList: List<T>?,
+    abstract class DiffAdapter<T>(val oldList: List<T>?,
                                   val newList: List<T>?) : DiffUtil.Callback() {
 
         override fun getOldListSize(): Int {
@@ -157,76 +120,17 @@ abstract class EmptyBaseRecyclerViewAdapter : BaseRecyclerViewAdapter {
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            try {
-                return oldList!![oldItemPosition] == newList!![newItemPosition]
-            } catch (e: Exception) {
-                return false
-            }
-
+            return oldList?.get(oldItemPosition) == newList?.get(newItemPosition) ?: false
         }
     }
 
-    /**
-     * Handler for null or empty datasets, showing loading views or empty messages
-     * Intended use:
-     * - If dataset is null then show a loading view
-     * - If dataset is has no items then show a view that explains this to the user
-     */
-    interface EmptyViews {
+    private inner class LoadingViewHolder internal constructor(v: View) : BaseViewHolder(v) {
+        override fun bind(position: Int) {
 
-        val nullLayoutID: Int
-        val emptyLayoutID: Int
-
-        /**
-         * Return the dataset for this adapter
-         */
-        val dataset: Collection<*>?
-
-        /**
-         * Return a ViewHolder to use when the dataset=null
-         * This usually means that data loading is in progress
-         */
-        @NonNull
-        fun getNullViewHolder(view: View): BaseViewHolder
-
-        /**
-         * Return a ViewHolder to use when getDataset().isEmpty()
-         * This usually means data loading has finished but has no contents
-         */
-        @NonNull
-        fun getEmptyViewHolder(view: View): BaseViewHolder
-    }
-
-    abstract class EmptyViewsAdapter : EmptyViews {
-
-        override val nullLayoutID: Int = R.layout.vh_loading
-        override val emptyLayoutID: Int = R.layout.vh_empty
-
-        @NonNull
-        override fun getNullViewHolder(view: View): BaseViewHolder {
-            return LoadingViewHolder(view)
-        }
-
-        @NonNull
-        override fun getEmptyViewHolder(view: View): BaseViewHolder {
-            return EmptyViewHolder(view)
-        }
-
-        private inner class EmptyViewHolder internal constructor(v: View) : BaseViewHolder(v) {
-            override fun bind(position: Int) {
-
-            }
-        }
-
-        private inner class LoadingViewHolder internal constructor(v: View) : BaseViewHolder(v) {
-            override fun bind(position: Int) {
-
-            }
         }
     }
 
     private class InvisibleViewHolder internal constructor(v: View) : BaseViewHolder(v) {
-
         override fun bind(position: Int) {
 
         }
@@ -239,8 +143,8 @@ abstract class EmptyBaseRecyclerViewAdapter : BaseRecyclerViewAdapter {
         private const val VIEW_TYPE_EMPTY = 321
 
         @NonNull
-        fun getDefaultDiffCallback(@Nullable oldList: List<*>?,
-                                            @Nullable newList: List<*>?): DiffUtil.Callback {
+        fun getDefaultDiffCallback(oldList: List<*>?,
+                                   newList: List<*>?): DiffUtil.Callback {
             return object : DiffUtil.Callback() {
                 override fun getOldListSize(): Int {
                     return Math.max(1, oldList?.size ?: 0)
@@ -260,7 +164,7 @@ abstract class EmptyBaseRecyclerViewAdapter : BaseRecyclerViewAdapter {
                 }
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return oldList!![oldItemPosition] == newList!![newItemPosition]
+                    return oldList?.get(oldItemPosition) == newList?.get(newItemPosition) ?: false
                 }
             }
         }
