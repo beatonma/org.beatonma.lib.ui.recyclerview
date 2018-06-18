@@ -13,10 +13,9 @@ import org.beatonma.lib.recyclerview.R
  */
 
 abstract class EmptyBaseRecyclerViewAdapter(
-        val nullLayoutID: Int = R.layout.vh_loading,
+        val nullLayoutID: Int = R.layout.vh_loading_custom,
         val emptyLayoutID: Int = R.layout.vh_invisible
 ): BaseRecyclerViewAdapter() {
-
     abstract val items: List<*>?
 
     /**
