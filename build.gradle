@@ -20,5 +20,4 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$versions.androidx"
 
     api project(":modules:ui:style")
-    api project(":modules:log")
 }
