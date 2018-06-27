@@ -1,4 +1,4 @@
-package org.beatonma.lib.ui.recyclerview
+package org.beatonma.lib.ui.recyclerview.itemanimator
 
 /*
  * Copyright 2018 The Android Open Source Project
@@ -483,13 +483,13 @@ abstract class BaseItemAnimator(
 /**
  * Null-safe way to add an item to a list
  */
-fun <T> T.addTo(list: MutableList<T>) {
+internal fun <T> T.addTo(list: MutableList<T>) {
     list.add(this)
 }
 
 /**
  * Null-safe way to remove an item from a list
  */
-fun <T> T.removeFrom(list: MutableList<T>) {
+internal fun <T> T.removeFrom(list: MutableList<T>) {
     list.remove(this)
 }
