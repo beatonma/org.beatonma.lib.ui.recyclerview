@@ -19,7 +19,6 @@ package org.beatonma.lib.ui.recyclerview.itemanimator
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.TimeInterpolator
-import android.view.View
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -42,22 +41,9 @@ abstract class BaseItemAnimator(
         val exitInterpolator: TimeInterpolator = Interpolate.getExitInterpolator(),
         val changeInterpolator: TimeInterpolator = Interpolate.getMotionInterpolator()
 ) : SimpleItemAnimator() {
-
-    protected fun View.widthF(): Float {
-        return width.toFloat()
-    }
-
-    protected fun View.heightF(): Float {
-        return height.toFloat()
-    }
-
     companion object {
-        private val TAG = "BaseItemAnimator"
-        private val DEBUG = false
+        private const val DEBUG = false
         const val DEFAULT_DURATION = 2000L
-//
-//        @NonNull
-//        private var sDefaultInterpolator: TimeInterpolator? = null
     }
 
     protected val mPendingRemovals = ArrayList<RecyclerView.ViewHolder>()
