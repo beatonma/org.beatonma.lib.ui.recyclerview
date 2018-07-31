@@ -1,11 +1,13 @@
-org.beatonma.lib:style:0.9.7
+org.beatonma.lib:style:0.9.21
 
-androidx.databinding:databinding-common:3.3.0-alpha02
-androidx.databinding:databinding-runtime:3.3.0-alpha02
-androidx.databinding:databinding-adapters:3.3.0-alpha02
+androidx.databinding:databinding-common:3.3.0-alpha03
+androidx.databinding:databinding-runtime:3.3.0-alpha03
+androidx.databinding:databinding-adapters:3.3.0-alpha03
 
-androidx.recyclerview:recyclerview:1.0.0-alpha3
+androidx.recyclerview:recyclerview:1.0.0-beta01
 
-com.google.android.material:material:1.0.0-alpha3
+com.google.android.material:material:1.0.0-beta01
 
+org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.2.50
+org.jetbrains.kotlin:kotlin-reflect:1.2.50
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50
