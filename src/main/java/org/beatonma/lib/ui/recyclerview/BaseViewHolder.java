@@ -5,12 +5,14 @@ import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.os.Build;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.beatonma.lib.recyclerview.R;
+
+import androidx.annotation.NonNull;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Michael on 14/07/2016.
@@ -25,7 +27,7 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
     protected final float liftMargin;
     protected final float liftElevation;
 
-    public BaseViewHolder(View v) {
+    public BaseViewHolder(@NonNull View v) {
         super(v);
         final Resources res = v.getResources();
         liftMargin = res.getDimension(R.dimen.selected_item_margin);
