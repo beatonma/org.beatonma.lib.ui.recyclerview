@@ -29,7 +29,7 @@ fun RecyclerView.setupGrid(adapter: BaseRecyclerViewAdapter, columnWidth: Int) {
 
     val weakRv = WeakReference<RecyclerView>(this)
 
-    post({
+    post {
         val recyclerView1 = weakRv.get() ?: return@post
 
         try {
@@ -41,5 +41,5 @@ fun RecyclerView.setupGrid(adapter: BaseRecyclerViewAdapter, columnWidth: Int) {
         } catch (e: Exception) {
             Log.e(TAG, "Error updating StaggeredGridLayoutManager column count: $e")
         }
-    })
+    }
 }
