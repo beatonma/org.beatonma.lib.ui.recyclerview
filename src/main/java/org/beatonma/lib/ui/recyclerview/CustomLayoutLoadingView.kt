@@ -30,7 +30,7 @@ class CustomLayoutLoadingView @JvmOverloads constructor(
 
     init {
         gravity = Gravity.CENTER
-        var layoutID: Int = R.layout.vh_loading
+        val layoutID: Int
         context.obtainStyledAttributes(attrs, R.styleable.CustomLayoutLoadingView, defStyleAttr, defStyleRes).apply {
             layoutID = getResourceId(R.styleable.CustomLayoutLoadingView_loading_layout, R.layout.vh_loading)
         }.recycle()
