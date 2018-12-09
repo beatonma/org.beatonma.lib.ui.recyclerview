@@ -1,6 +1,6 @@
 dependencies {
-    implementation "$module_dependencies.google.material"
-    implementation "$module_dependencies.google.recyclerview"
+    implementation "com.google.android.material:material:$versions.androidx"
+    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
 
     api project(":modules:ui:style")
 }
