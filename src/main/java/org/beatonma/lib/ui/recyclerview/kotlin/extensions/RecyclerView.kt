@@ -6,17 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.beatonma.lib.ui.recyclerview.BaseRecyclerViewAdapter
+import org.beatonma.lib.ui.recyclerview.SimpleItemTouchHelperCallback
 import org.beatonma.lib.ui.recyclerview.itemanimator.FadeItemAnimator
 import java.lang.ref.WeakReference
 
 fun RecyclerView.setup(adapter: BaseRecyclerViewAdapter,
                        layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
                        itemAnimator: RecyclerView.ItemAnimator = FadeItemAnimator(),
-                       touchHelper: Boolean = false) {
+                       touchCallback: SimpleItemTouchHelperCallback? = null) {
     setAdapter(adapter)
     setLayoutManager(layoutManager)
     setItemAnimator(itemAnimator)
-    if (touchHelper) adapter.setupWithTouchHelper(this)
+    adapter.setupTouchHelper(this, touchCallback)
 }
 
 /**
